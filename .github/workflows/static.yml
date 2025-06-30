@@ -1,0 +1,435 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Horizon MMO - Entwicklungs-Roadmap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2416 50%, #1a1a1a 100%);
+            font-family: 'Inter', sans-serif;
+            color: #e0e0e0;
+            padding: 0;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.9);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #d4671f, #ff8c42);
+            padding: 20px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid #d4671f;
+        }
+        
+        .logo-container {
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .game-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .document-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .roadmap-container {
+            padding: 30px;
+        }
+        
+        .phase {
+            margin-bottom: 25px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(212, 103, 31, 0.15), rgba(212, 103, 31, 0.08));
+            border-radius: 12px;
+            border: 2px solid rgba(212, 103, 31, 0.4);
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+        
+        .phase-header {
+            background: linear-gradient(90deg, #d4671f, #ff8c42);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .phase-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .phase-date {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .phase-content {
+            padding: 20px 25px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .feature {
+            background: rgba(212, 103, 31, 0.15);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border-left: 3px solid #d4671f;
+            font-size: 0.85rem;
+        }
+        
+        .phase-description {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #b0b0b0;
+        }
+        
+        .footer {
+            background: linear-gradient(45deg, #1a1a1a, #2d2416);
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 2px solid rgba(212, 103, 31, 0.4);
+            page-break-inside: avoid;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .faction-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .faction-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            border: 2px solid #d4671f;
+            background: rgba(212, 103, 31, 0.2);
+        }
+        
+        .print-note {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #d4671f;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+        
+        @media print {
+            .print-note {
+                display: none;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .phase {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .game-logo {
+                font-size: 1.8rem;
+            }
+            
+            .phase-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .document-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-note">
+        Drücke Strg+P → "Als PDF speichern" → "Hintergrundgrafiken: Ein"
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDIwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMWExYTFhIiByeD0iMTAiLz4KPHN2ZyB4PSIyMCIgeT0iMTAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMzAiPgo8dGV4dCB4PSI4MCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJPcmJpdHJvbiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2Q0NjcxZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TEFTVCBIT1JJWk9OPC90ZXh0Pgo8L3N2Zz4KPHN2ZyB4PSI1MCIgeT0iNDAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiPgo8cG9seWdvbiBwb2ludHM9IjEwLDEwIDMwLDUgNzAsOCA5MCwxNSA5MCwyNSA3MCwyMCAzMCwyNSAxMCwyMCIgZmlsbD0iI2ZmOGM0MiIgb3BhY2l0eT0iMC44Ii8+Cjxwb2x5Z29uIHBvaW50cz0iMTUsNCAzNSwyIDcwLDQgODUsOCA4NSwyMCA3MCwxNyAzNSwyMCAxNSwxNSIgZmlsbD0iIzMzMzMzMyIgb3BhY2l0eT0iMC45Ii8+CjwvdGV4dD4KPC9zdmc+Cg==" alt="Last Horizon Logo" class="logo">
+            </div>
+            
+            <h1 class="game-logo">LAST HORIZON MMO</h1>
+            <p class="subtitle">Entwicklungs-Roadmap | 300 Spieler • 3 Fraktionen • 1 Überlebender</p>
+            
+            <div class="document-info">
+                <span>📅 Erstellt: Juni 2025</span>
+                <span>📋 Version: 1.0</span>
+                <span>🎯 Release: Q3-Q4 2027</span>
+            </div>
+        </div>
+        
+        <div class="roadmap-container">
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">🔥 PHASE 1: GRUNDLAGEN</h2>
+                    <span class="phase-date">Q1 2025</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Konzeptverfeinerung, Team-Aufbau und Basis-Infrastruktur. Fundament für das gesamte Projekt.</p>
+                    <div class="features">
+                        <div class="feature">✓ Spielkonzept finalisieren</div>
+                        <div class="feature">✓ Core-Team zusammenstellen</div>
+                        <div class="feature">✓ Engine-Setup (Unreal 5)</div>
+                        <div class="feature">✓ Discord-Community aufbauen</div>
+                        <div class="feature">✓ Kickstarter-Kampagne vorbereiten</div>
+                        <div class="feature">✓ Erste Prototypen</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">💰 PHASE 2: FINANZIERUNG</h2>
+                    <span class="phase-date">Q2 2025</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Kickstarter-Kampagne starten und Community-Support sichern. Basis für die vollständige Entwicklung.</p>
+                    <div class="features">
+                        <div class="feature">🎯 Kickstarter-Launch (1.5M€ Ziel)</div>
+                        <div class="feature">🎬 Marketing-Kampagne</div>
+                        <div class="feature">🎮 Spielbarer Demo-Build</div>
+                        <div class="feature">📺 Influencer-Outreach</div>
+                        <div class="feature">🎨 Art-Style finalisieren</div>
+                        <div class="feature">👥 Erweiterte Team-Rekrutierung</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">⚒️ PHASE 3: KERN-ENTWICKLUNG</h2>
+                    <span class="phase-date">Q3 2025 - Q2 2026</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Entwicklung der Kernmechaniken und Basis-Features. 100v100 System und Fraktions-Gameplay implementieren.</p>
+                    <div class="features">
+                        <div class="feature">⚔️ 100v100 Schlacht-System</div>
+                        <div class="feature">🏗️ Basenbau-Mechaniken</div>
+                        <div class="feature">🎭 3 Fraktionen implementieren</div>
+                        <div class="feature">🌍 Grundkarte (100km²)</div>
+                        <div class="feature">🔄 Server-Architektur</div>
+                        <div class="feature">📊 Charakterprogression</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">🧪 PHASE 4: ALPHA-TESTING</h2>
+                    <span class="phase-date">Q3 2026</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Geschlossene Alpha-Tests mit Kickstarter-Backern. Feedback sammeln und Core-Systeme verfeinern.</p>
+                    <div class="features">
+                        <div class="feature">👥 Alpha-Tester (500 Spieler)</div>
+                        <div class="feature">🐛 Bug-Fixing & Balance</div>
+                        <div class="feature">🎯 Gameplay-Loop optimieren</div>
+                        <div class="feature">📡 Server-Stabilität testen</div>
+                        <div class="feature">🎨 UI/UX-Verbesserungen</div>
+                        <div class="feature">📊 Performance-Optimierung</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">🔧 PHASE 5: BETA-PHASE</h2>
+                    <span class="phase-date">Q4 2026 - Q1 2027</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Erweiterte Beta mit mehr Spielern. NEXUS-System implementieren und finale Balance-Anpassungen.</p>
+                    <div class="features">
+                        <div class="feature">🤖 NEXUS-System implementieren</div>
+                        <div class="feature">🌪️ Umweltgefahren & Wetter</div>
+                        <div class="feature">👥 Beta-Tester (2000 Spieler)</div>
+                        <div class="feature">⚡ Anti-Cheat-System</div>
+                        <div class="feature">🎵 Audio & Soundtrack</div>
+                        <div class="feature">🎮 Controller-Support</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">🚀 PHASE 6: EARLY ACCESS</h2>
+                    <span class="phase-date">Q2 2027</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Öffentlicher Early Access Launch. Core-Features vollständig, aber noch in Entwicklung befindlich.</p>
+                    <div class="features">
+                        <div class="feature">🌟 Steam Early Access Launch</div>
+                        <div class="feature">🎯 3 Fraktionen vollständig</div>
+                        <div class="feature">⚔️ 100v100 Schlachten stabil</div>
+                        <div class="feature">🏰 Vollständiger Basenbau</div>
+                        <div class="feature">📈 Community-Events</div>
+                        <div class="feature">🔄 2-Wochen Server-Zyklen</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase">
+                <div class="phase-header">
+                    <h2 class="phase-title">👑 PHASE 7: FULL RELEASE</h2>
+                    <span class="phase-date">Q3-Q4 2027</span>
+                </div>
+                <div class="phase-content">
+                    <p class="phase-description">Vollständige Veröffentlichung mit allen Features. Konsolen-Versionen und langfristige Content-Updates.</p>
+                    <div class="features">
+                        <div class="feature">🎮 Konsolen-Launch (PS5/Xbox)</div>
+                        <div class="feature">🌍 Komplette Spielwelt</div>
+                        <div class="feature">📱 Begleit-App</div>
+                        <div class="feature">🛠️ Mod-Support</div>
+                        <div class="feature">🎯 Ranked-Seasons</div>
+                        <div class="feature">🚀 Post-Launch Content</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-text">🔥 "Überlebe. Erobere. Herrsche." 🔥</p>
+            <p class="footer-text">Join der Community und werde Teil der ersten 100!</p>
+            <div class="faction-icons">
+                <div class="faction-icon" title="Kinder der Asche">🔥</div>
+                <div class="faction-icon" title="Föderation">🚀</div>
+                <div class="faction-icon" title="Projekt Unterwelt">🏔️</div>
+            </div>
+            <br>
+            <p class="footer-text" style="font-size: 0.8rem; opacity: 0.6;">
+                © 2025 Last Horizon MMO Development Team | Alle Rechte vorbehalten
+            </p>
+        </div>
+    </div>
+</body>
+</html>
