@@ -14,7 +14,7 @@ last-horizon-roadmap/
 
     # 🔥 Last Horizon MMO - Roadmap
 
-**Live-Roadmap:** https://IHR-USERNAME.github.io/last-horizon-roadmap
+**Live-Roadmap:** https://Marlow932.github.io/last-horizon-roadmap
 
 ## 🎮 Das Spiel
 300 Spieler • 3 Fraktionen • 1 Überlebender
